@@ -1,0 +1,185 @@
+{
+  "diseases": {
+    "Tomato_Bacterial_spot": {
+      "symptoms": "Small, water-soaked leaf lesions with yellow halos, turning brown and dry. Fruits develop raised, rough spots.",
+      "causes": "Caused by Xanthomonas spp., spread via splashing water and contaminated tools.",
+      "effects": "Defoliation, fruit blemishes, and lower marketability.",
+      "treatments": {
+        "cultural": [
+          "Use certified seeds",
+          "Avoid working in fields when wet",
+          "Use resistant varieties"
+        ],
+        "mechanical": [],
+        "chemical": {
+          "product": "EFEKTO VIRIKOP (Copper oxychloride) or HAMBA COPPER OXYCHLORIDE",
+          "price": "E160 (200g) / E190 (1kg)",
+          "note": "Apply every 7–10 days during humid conditions",
+          "dosage": "50g per 20L water"
+        }
+      }
+    },
+    "Tomato_Early_blight": {
+      "symptoms": "Dark spots with concentric rings on older leaves, surrounded by yellow zones.",
+      "causes": "Alternaria solani fungus, favored by warm, humid conditions.",
+      "effects": "Leaf loss, reduced photosynthesis, and smaller fruit yield.",
+      "treatments": {
+        "cultural": [
+          "Practice crop rotation",
+          "Remove infected debris",
+          "Use resistant varieties"
+        ],
+        "mechanical": [],
+        "chemical": {
+          "product": "HAMBA MANCOZEB or COSAMIL (Mancozeb-based)",
+          "price": "E160 (1kg) / E65 (500g)",
+          "note": "Apply as soon as symptoms appear",
+          "dosage": "40g per 20L water"
+        }
+      }
+    },
+    "Tomato_Late_blight": {
+      "symptoms": "Large, irregular, water-soaked lesions with pale green borders; white mold under leaf.",
+      "causes": "Phytophthora infestans oomycete; thrives in cool, wet conditions.",
+      "effects": "Leaf and fruit rot, total crop failure if untreated.",
+      "treatments": {
+        "cultural": [
+          "Ensure good air circulation",
+          "Use disease-free seeds",
+          "Destroy infected plants"
+        ],
+        "mechanical": [],
+        "chemical": {
+          "product": "EFEKTO VIRIKOP (Copper) + HAMBA MANCOZEB (Mix)",
+          "price": "E160 (200g copper) + E160 (1kg mancozeb)",
+          "note": "Start preventive sprays before rainy season",
+          "dosage": "50g copper + 40g mancozeb per 20L water"
+        }
+      }
+    },
+    "Tomato_Leaf_Mold": {
+      "symptoms": "Yellow spots on upper leaf surfaces and olive-green to gray mold on the undersides.",
+      "causes": "Fungus Fulvia fulva, spread in humid, poorly ventilated environments.",
+      "effects": "Reduces leaf area and photosynthesis; weakens plants.",
+      "treatments": {
+        "cultural": [
+          "Improve greenhouse ventilation",
+          "Remove affected leaves",
+          "Water soil, not leaves"
+        ],
+        "mechanical": [],
+        "chemical": {
+          "product": "KUMULUS WG (Sulfur)",
+          "price": "E113.04 (200g)",
+          "note": "Avoid high temperatures (>30°C)",
+          "dosage": "30g per 20L water"
+        }
+      }
+    },
+    "Tomato_Septoria_leaf_spot": {
+      "symptoms": "Small, circular spots with gray centers and dark brown margins, mainly on lower leaves.",
+      "causes": "Fungus Septoria lycopersici, spreads in humid conditions through splashing water or debris.",
+      "effects": "Premature defoliation, reduced yield due to decreased photosynthesis.",
+      "treatments": {
+        "cultural": [
+          "Remove infected lower leaves",
+          "Avoid overhead irrigation",
+          "Use crop rotation"
+        ],
+        "mechanical": [],
+        "chemical": {
+          "product": "HAMBA MANCOZEB",
+          "price": "E160 (1kg)",
+          "note": "Start application at first symptom appearance",
+          "dosage": "40g per 20L water"
+        }
+      }
+    },
+    "Tomato_Spider_mites Two-spotted_spider_mite": {
+      "symptoms": "Stippling or tiny yellow spots on leaves; fine webbing under heavy infestations.",
+      "causes": "Infestation by two-spotted spider mites (Tetranychus urticae), favored by hot, dry conditions.",
+      "effects": "Leaf bronzing, drop, stunted plant growth, reduced yield.",
+      "treatments": {
+        "cultural": [
+          "Increase humidity",
+          "Spray plants with water to knock off mites"
+        ],
+        "mechanical": [],
+        "chemical": {
+          "product": "KUMULUS WG (Sulfur) or KICKBACK (if miticide)",
+          "price": "E113.04 (200g sulfur) / E340 (340g Kickback)",
+          "note": "Sulfur for mild cases; Kickback for severe infestations",
+          "dosage": "30g sulfur or 10ml Kickback per 20L water"
+        }
+      }
+    },
+    "Tomato_Target_Spot": {
+      "symptoms": "Dark brown spots with concentric rings (bullseye pattern) on leaves and fruits.",
+      "causes": "Fungus Corynespora cassiicola, spread through water and infected plant debris.",
+      "effects": "Leaf drop and fruit lesions, leading to poor fruit quality and lower yield.",
+      "treatments": {
+        "cultural": [
+          "Remove infected debris",
+          "Ensure plant spacing for airflow",
+          "Rotate crops"
+        ],
+        "mechanical": [],
+        "chemical": {
+          "product": "HAMBA MANCOZEB",
+          "price": "E160 (1kg)",
+          "note": "Begin treatment early when spotting appears",
+          "dosage": "40g per 20L water"
+        }
+      }
+    },
+    "Tomato_Tomato_Yellow_Leaf_Curl_Virus": {
+      "symptoms": "Upward curling and yellowing of leaves, stunted growth, flower drop.",
+      "causes": "Transmitted by whiteflies carrying Tomato Yellow Leaf Curl Virus (TYLCV).",
+      "effects": "Severely stunted plants with little or no fruit; major economic losses.",
+      "treatments": {
+        "cultural": [
+          "Use TYLCV-resistant varieties",
+          "Control whiteflies with yellow sticky traps",
+          "Remove infected plants immediately"
+        ],
+        "mechanical": [],
+        "chemical": {
+          "product": "KICKBACK (likely Imidacloprid)",
+          "price": "E340 (340g)",
+          "note": "Apply systemically early in the season",
+          "dosage": "10ml per 20L water"
+        }
+      }
+    },
+    "Tomato_Tomato_mosaic_virus": {
+      "symptoms": "Mottled or mosaic-like light and dark green areas on leaves, sometimes with leaf distortion.",
+      "causes": "Caused by Tomato Mosaic Virus (ToMV), spread through contact with infected tools, hands, or plants.",
+      "effects": "Reduced plant vigor, deformed fruits, uneven ripening, and lower yields.",
+      "treatments": {
+        "cultural": [
+          "Disinfect tools regularly",
+          "Remove and destroy infected plants",
+          "Use virus-free seeds"
+        ],
+        "mechanical": [],
+        "chemical": null
+      }
+    },
+    "Tomato_healthy": {
+      "diagnosis": "No disease detected",
+      "symptoms": null,
+      "causes": null,
+      "effects": null,
+      "recommendations": "Tomato plant is healthy. Maintain clean fields and seed health.",
+      "monitoring_advice": [
+        "Inspect leaves for dark lesions weekly",
+        "Apply fungicide preventively if wet conditions persist"
+      ],
+      "treatments": {
+        "cultural": [],
+        "mechanical": [],
+        "chemical": null
+      }
+    }
+  }
+}
