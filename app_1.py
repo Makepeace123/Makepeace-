@@ -118,4 +118,92 @@ def process_image(uploaded_file):
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
         st.stop()
+def display_results(predicted_class, info, confidence):
+    plant_type = predicted_class.split('___')[0].replace('_', ' ').title()
 
+    if 'healthy' in predicted_class.lower():
+        st.balloons()
+        st.success("✅ Healthy Tomato Leaf")
+        st.markdown("""
+        ### Recommendations
+        Tomato plant is healthy. Maintain clean fields and seed health.
+        ### Monitoring Advice
+        - Inspect leaves for dark lesions weekly
+        - Apply fungicide preventively if wet conditions persist
+        - Monitor for early blight symptoms
+        - Ensure proper spacing between plants (18-24 inches)
+        """)
+    else:
+        disease_name = predicted_class.split('___')[1].replace('_', ' ').title() if '___' in predicted_class else predicted_class.replace('_', ' ').title()
+        st.warning(f"⚠️ Detected: {disease_name} ({confidence*100:.1f}% confidence)")
+        
+        tab1, tab2, tab3, tab4 = st.tabs(["Symptoms", "Prevention", "Treatment", "Chemical Details"])
+        
+        with tab1:
+            st.markdown(f"""
+            **Plant Type:** {plant_type}
+            
+            **Symptoms:**  
+            {info['symptoms']}
+            
+            **Causes:**  
+            {info['causes']}
+            
+            **Effects:**  
+            {info['effects']}
+            """)
+            
+        with tab2:
+            st.markdown("### Prevention Methods")
+            st.markdown("#### Cultural Practices")
+            for method in info['treatments']['cultural']:
+                st.markdown(f"- {method}")
+                
+        with tab3:
+            st.markdown("### Treatment Options")
+            
+            if info['treatments']['chemical']:
+                st.markdown("#### Chemical Treatment")
+                chem = info['treatments']['chemical']
+                
+                st.markdown(f"""
+                - **Product:** {chem['product']} 
+                - **Dosage:** {chem['dosage']}
+                - **Instructions:** {chem.get('note', 'N/A')}
+                """)
+            else:
+                st.info("No chemical treatment recommended")
+                
+            if info['treatments']['mechanical']:
+                st.markdown("#### Mechanical Treatment")
+                for method in info['treatments']['mechanical']:
+                    st.markdown(f"- {method}")
+                
+        with tab4:
+            # Price disclaimer
+            st.info("*⚠️CAUTION: Price estimates are approximate and may vary by store/region*")
+                
+            if info['treatments']['chemical']:
+                chem = info['treatments']['chemical']
+
+                st.markdown(f"""
+                ### Detailed Chemical Information
+                
+                **🔎Product Name:**  
+                *{chem['product']}*  
+                
+                **💰Approx. Market Price:**  
+                *{chem.get('price', 'Not available')}* 
+                
+                **⚠️Safety Precautions:**  
+                *{chem.get('safety', 'Wear protective gear during application')}*
+                """)
+            else:
+                st.info("No chemical treatment details available")
+
+if __name__ == "__main__":
+    # Suppress TensorFlow warnings
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+    tf.get_logger().setLevel('ERROR')
+    main()
+    
