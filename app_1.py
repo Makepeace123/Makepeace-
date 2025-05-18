@@ -24,10 +24,10 @@ def load_models():
     leaf_classifier = tf.keras.models.load_model('leaf_classifier_mobilenetv2.h5')
     
     # Load disease detection model
-    model_path = 'Tomato_mblnetv2.h5'
+    model_path = 'Tomato_doctor_mblnetv2.h5'
     fallback_paths = [
-        './models/Tomato_mblnetv2.h5',
-        './plant-doctor/Tomato_mblnetv2.h5'
+        './models/Tomato_doctor_mblnetv2.h5',
+        './plant-doctor/Tomato_doctor_mblnetv2.h5'
     ]
 
     for path in [model_path] + fallback_paths:
