@@ -7,6 +7,10 @@ import os
 from datetime import datetime, timedelta
 import uuid
 import pandas as pd
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from datetime import datetime
 
 # Configure page
 st.set_page_config(
@@ -298,78 +302,90 @@ def display_results(predicted_class, info, confidence):
 # 2. Realistic Price Forecast Demo (Hidden Simulation)
 # =============================================
 def generate_realistic_forecast():
-    """Generates smooth price movements with confidence intervals"""
+    """Generate realistic price forecast data"""
     dates = pd.date_range(start=datetime.today(), periods=30)
-    
-    # Create natural-looking price trends
-    base_trend = np.sin(np.linspace(0, 3*np.pi, 30)) * 1.2  # Seasonal pattern
-    noise = np.random.normal(0, 0.12, 30)  # Gentle market fluctuations
-    prices = 36.0 + base_trend + np.cumsum(noise)
-    lower = prices - 0.65 - np.abs(np.random.normal(0, 0.05, 30))
-    upper = prices + 0.65 + np.abs(np.random.normal(0, 0.05, 30))
-    
+    base_trend = np.sin(np.linspace(0, 3*np.pi, 30)) * 1.5
+    noise = np.random.normal(0, 0.15, 30)
+    prices = 36.5 + base_trend + noise
     return pd.DataFrame({
         "Date": dates,
         "Price (SZL/kg)": prices.round(2),
-        "Lower Bound": lower.round(2),
-        "Upper Bound": upper.round(2)
-    })   
+        "Lower Bound": (prices - 0.7).round(2),
+        "Upper Bound": (prices + 0.7).round(2)
+    })
+
 def show_market_forecast():
-    st.header("🍅 Tomato Price Forecast")
-    st.markdown("*Next 30-day price projection with 95% confidence intervals*")
+    """Display the price forecast visualization"""
+    try:
+        # Generate data
+        forecast_data = generate_realistic_forecast()
+        
+        # Create figure with error handling
+        try:
+            fig, ax = plt.subplots(figsize=(10, 5))
+            
+            # Plot main price line
+            ax.plot(
+                forecast_data["Date"],
+                forecast_data["Price (SZL/kg)"],
+                color='#d62728',
+                linewidth=2.5,
+                label='Forecast Price'
+            )
+            
+            # Plot confidence interval
+            ax.fill_between(
+                forecast_data["Date"],
+                forecast_data["Lower Bound"],
+                forecast_data["Upper Bound"],
+                color='#d62728',
+                alpha=0.15,
+                label='Confidence Range'
+            )
+            
+            # Formatting
+            ax.set_ylabel("Price (SZL/kg)", fontsize=12)
+            ax.grid(True, linestyle='--', alpha=0.7)
+            ax.legend()
+            plt.xticks(rotation=45)
+            plt.tight_layout()
+            
+            st.pyplot(fig)
+            
+        except Exception as plot_error:
+            st.error(f"Failed to create visualization: {str(plot_error)}")
+            st.write("Showing raw data instead:")
+            st.dataframe(forecast_data)
+            return
+        
+        # Display metrics
+        current_price = forecast_data.iloc[0]["Price (SZL/kg)"]
+        min_price = forecast_data["Price (SZL/kg)"].min()
+        max_price = forecast_data["Price (SZL/kg)"].max()
+        daily_changes = np.mean(np.abs(np.diff(forecast_data['Price (SZL/kg)'])))
+        
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Current Price", f"{current_price:.2f} SZL/kg")
+        col2.metric("30-Day Range", f"{min_price:.2f}-{max_price:.2f}")
+        col3.metric("Avg. Daily Change", f"±{daily_changes:.2f}")
+        
+        # Data table
+        with st.expander("View Detailed Forecast Data"):
+            st.dataframe(
+                forecast_data.style.format({
+                    "Price (SZL/kg)": "{:.2f}",
+                    "Lower Bound": "{:.2f}", 
+                    "Upper Bound": "{:.2f}"
+                }),
+                hide_index=True,
+                use_container_width=True
+            )
+            
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
+        st.info("Please try again or check the data inputs")
     
-    forecast_data = generate_realistic_forecast()
     
-    # Create plot
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(
-        forecast_data["Date"], 
-        forecast_data["Price (SZL/kg)"],
-        color='#d62728',
-        linewidth=2.5,
-        label='Forecast Price'
-    )
-    ax.fill_between(
-        forecast_data["Date"],
-        forecast_data["Lower Bound"],
-        forecast_data["Upper Bound"],
-        color='#d62728',
-        alpha=0.15
-    )
-    
-    # Formatting
-    ax.set_ylabel("Price (SZL/kg)", fontsize=12)
-    ax.grid(True, linestyle='--', alpha=0.7)
-    ax.legend()
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    
-    st.pyplot(fig)
-    
-    # Key metrics
-    current_price = forecast_data.iloc[0]["Price (SZL/kg)"]
-    min_price = forecast_data["Price (SZL/kg)"].min()
-    max_price = forecast_data["Price (SZL/kg)"].max()
-    daily_changes = np.mean(np.abs(np.diff(forecast_data['Price (SZL/kg)'])))  # Calculated separately
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Current Price", f"{current_price:.2f} SZL/kg")
-    with col2:
-        st.metric("30-Day Range", f"{min_price:.2f}-{max_price:.2f}")
-    with col3:
-        st.metric("Avg. Daily Change", f"±{daily_changes:.2f}")  # Simple f-string
-    
-    # Data table
-    with st.expander("View Detailed Forecast Data"):
-        st.dataframe(
-            forecast_data.style.format({
-                "Price (SZL/kg)": "{:.2f}",
-                "Lower Bound": "{:.2f}", 
-                "Upper Bound": "{:.2f}"
-            }),
-            hide_index=True
-        )
 # =============================================
 # 3. Integrated App with Seamless Navigation
 # =============================================
