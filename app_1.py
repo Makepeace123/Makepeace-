@@ -346,7 +346,7 @@ def show_price_forecast():
         )
 
 # To use in your app:
-# show_price_forecast()
+ show_price_forecast()
 
 # =============================================
 # 3. Integrated App with Seamless Navigation
