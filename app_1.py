@@ -403,7 +403,7 @@ def main():
     
     # Disease Diagnosis Mode
     if app_mode == "Disease Diagnosis":
-        st.title("🍅🌿Tomato Disease Diagnosis🔬🩺")
+        st.title("🍅Tomato Disease Diagnosis🔍")
         st.markdown("Upload a clear photo of a tomato leaf for instant analysis")
         
         # Display history
