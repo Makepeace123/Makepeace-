@@ -297,8 +297,6 @@ def display_results(predicted_class, info, confidence):
 # =============================================
 # 2. Realistic Price Forecast Demo (Hidden Simulation)
 # =============================================
-import matplotlib.pyplot as plt
-
 def generate_realistic_forecast():
     """Generates smooth price movements with confidence intervals"""
     dates = pd.date_range(start=datetime.today(), periods=30)
