@@ -120,7 +120,7 @@ def display_history(history):
                         img = Image.frombytes('RGB', (224, 224), img_bytes)
                         st.image(img, width=100)
                     except:
-                        st.image(Image.new('RGB', (100, 100), width=100)
+                        st.image(Image.new('RGB', (100, 100)), width=100)  # Fixed line
                 
                 with col2:
                     if entry['disease'] == "Healthy":
