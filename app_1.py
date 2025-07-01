@@ -325,7 +325,7 @@ def generate_realistic_forecast():
     })
 
 def show_market_forecast():
-    st.header("🍅 Tomato Market Intelligence")
+    st.header("🔎📊🍅 Tomato Market Intelligence")
     st.markdown("""
     *30-day price forecast based on current market conditions and historical trends*
     """)
@@ -350,7 +350,7 @@ def show_market_forecast():
             #""")
     
     # Data table with tooltips
-    with st.expander("📊 Detailed Forecast Data", expanded=False):
+    with st.expander("🔎📊 Detailed Forecast Data", expanded=False):
         st.dataframe(
             forecast_data,
             column_config={
@@ -403,7 +403,7 @@ def main():
     
     # Disease Diagnosis Mode
     if app_mode == "Disease Diagnosis":
-        st.title("🍅 Tomato Disease Diagnosis")
+        st.title("🍅🔬🩺 Tomato Disease Diagnosis)
         st.markdown("Upload a clear photo of a tomato leaf for instant analysis")
         
         # Display history
