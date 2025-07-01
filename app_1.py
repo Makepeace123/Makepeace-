@@ -390,38 +390,62 @@ def show_market_forecast():
         st.metric(
             "Expected Range",
             f"{min_price:.2f} - {max_price:.2f}"
-        )
-    with col3:
-        st.metric(
-            "Avg. Daily Change",
-            f"±{np.mean(np.abs(np.diff(forecast_data['Price (SZL/kg)'])):.2f}"
-        )
+def show_market_forecast():
+    st.header("🍅 Tomato Price Forecast")
+    st.markdown("*Next 30-day price projection with 95% confidence intervals*")
     
-    # Data table with conditional formatting
-    with st.expander("📋 Detailed Forecast Data", expanded=False):
+    forecast_data = generate_realistic_forecast()
+    
+    # Create plot
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(
+        forecast_data["Date"], 
+        forecast_data["Price (SZL/kg)"],
+        color='#d62728',
+        linewidth=2.5,
+        label='Forecast Price'
+    )
+    ax.fill_between(
+        forecast_data["Date"],
+        forecast_data["Lower Bound"],
+        forecast_data["Upper Bound"],
+        color='#d62728',
+        alpha=0.15
+    )
+    
+    # Formatting
+    ax.set_ylabel("Price (SZL/kg)", fontsize=12)
+    ax.grid(True, linestyle='--', alpha=0.7)
+    ax.legend()
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    
+    st.pyplot(fig)
+    
+    # Key metrics
+    current_price = forecast_data.iloc[0]["Price (SZL/kg)"]
+    min_price = forecast_data["Price (SZL/kg)"].min()
+    max_price = forecast_data["Price (SZL/kg)"].max()
+    daily_changes = np.mean(np.abs(np.diff(forecast_data['Price (SZL/kg)'])))  # Calculated separately
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Current Price", f"{current_price:.2f} SZL/kg")
+    with col2:
+        st.metric("30-Day Range", f"{min_price:.2f}-{max_price:.2f}")
+    with col3:
+        st.metric("Avg. Daily Change", f"±{daily_changes:.2f}")  # Simple f-string
+    
+    # Data table
+    with st.expander("View Detailed Forecast Data"):
         st.dataframe(
-            forecast_data.style \
-                .background_gradient(subset=["Price (SZL/kg)"], cmap='Reds') \
-                .format({
-                    "Price (SZL/kg)": "{:.2f}",
-                    "Lower Bound": "{:.2f}",
-                    "Upper Bound": "{:.2f}"
-                }),
-            column_config={
-                "Date": st.column_config.DateColumn(
-                    "Date",
-                    format="MMM D, YYYY"
-                ),
-                "Price (SZL/kg)": st.column_config.NumberColumn(
-                    "Price",
-                    help="Predicted median market price",
-                    width="medium"
-                )
-            },
-            use_container_width=True,
+            forecast_data.style.format({
+                "Price (SZL/kg)": "{:.2f}",
+                "Lower Bound": "{:.2f}", 
+                "Upper Bound": "{:.2f}"
+            }),
             hide_index=True
         )
-
 # =============================================
 # 3. Integrated App with Seamless Navigation
 # =============================================
