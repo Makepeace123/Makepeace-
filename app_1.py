@@ -331,12 +331,7 @@ def show_market_forecast():
     """)
     
     forecast_data = generate_realistic_forecast()
-     # Cleaner visualization using area chart
-    st.area_chart(
-        forecast_data.set_index("Date"),
-        y=["Price (SZL/kg)", "Lower Bound", "Upper Bound"],
-        color=["#FF6347", "#D3D3D3", "#D3D3D3"]  # Tomato red for price, light gray for bounds
-    )
+     
     # Professional-looking visualization
     #st.area_chart(
         #forecast_data.set_index("Date"),
