@@ -331,23 +331,28 @@ def show_market_forecast():
     """)
     
     forecast_data = generate_realistic_forecast()
-    
-    # Professional-looking visualization
+     # Cleaner visualization using area chart
     st.area_chart(
         forecast_data.set_index("Date"),
-        y=["Market Price (SZL/kg)", "Confidence Lower", "Confidence Upper"],
-        color=["#FF4B4B", "#F0F2F6", "#F0F2F6"]
+        y=["Price (SZL/kg)", "Lower Bound", "Upper Bound"],
+        color=["#FF6347", "#D3D3D3", "#D3D3D3"]  # Tomato red for price, light gray for bounds
     )
+    # Professional-looking visualization
+    #st.area_chart(
+        #forecast_data.set_index("Date"),
+        #y=["Market Price (SZL/kg)", "Confidence Lower", "Confidence Upper"],
+        #color=["#FF4B4B", "#F0F2F6", "#F0F2F6"]
+    #)
     
     # Market commentary
-    event_dates = forecast_data[forecast_data["Market Event"] != "Normal"]
-    if not event_dates.empty:
-        st.subheader("Key Market Events")
-        for _, row in event_dates.iterrows():
-            st.markdown(f"""
-            - **{row['Date'].strftime('%b %d')}**: {row['Market Event']}  
-              Price impact: {abs(row['Market Price (SZL/kg)'] - forecast_data.at[row.name-1, 'Market Price (SZL/kg)']):.2f} SZL/kg
-            """)
+    #event_dates = forecast_data[forecast_data["Market Event"] != "Normal"]
+    #if not event_dates.empty:
+        #st.subheader("Key Market Events")
+        #for _, row in event_dates.iterrows():
+            #st.markdown(f"""
+            #- **{row['Date'].strftime('%b %d')}**: {row['Market Event']}  
+              #Price impact: {abs(row['Market Price (SZL/kg)'] - forecast_data.at[row.name-1, 'Market Price (SZL/kg)']):.2f} SZL/kg
+            #""")
     
     # Data table with tooltips
     with st.expander("📊 Detailed Forecast Data", expanded=False):
