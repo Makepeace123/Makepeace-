@@ -372,6 +372,61 @@ def show_market_forecast():
     )
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
+def show_market_forecast():
+    st.header("🍅 Tomato Price Forecast")
+    st.markdown("""
+    <style>
+    .forecast-header {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 1.5rem;
+    }
+    </style>
+    <div class="forecast-header">
+    Next 30-day price projection with 95% confidence intervals
+    </div>
+    """, unsafe_allow_html=True)
+    
+    forecast_data = generate_realistic_forecast()
+    
+    # Create professional financial-style plot
+    fig, ax = plt.subplots(figsize=(10, 5))
+    
+    # Main price line
+    ax.plot(
+        forecast_data["Date"],
+        forecast_data["Price (SZL/kg)"],
+        color='#d62728',  # Professional red
+        linewidth=2.5,
+        marker='o',
+        markersize=5,
+        label='Median Forecast'
+    )
+    
+    # Confidence interval
+    ax.fill_between(
+        forecast_data["Date"],
+        forecast_data["Lower Bound"],
+        forecast_data["Upper Bound"],
+        color='#d62728',
+        alpha=0.1,
+        label='Confidence Range'
+    )
+    
+    # Formatting
+    ax.set_ylabel("Price (SZL/kg)", fontsize=12, labelpad=10)
+    ax.yaxis.grid(True, linestyle='--', alpha=0.6)
+    ax.xaxis.grid(False)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.legend(
+        loc='upper center',
+        bbox_to_anchor=(0.5, -0.15),
+        ncol=2,
+        frameon=False
+    )
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
     
     # Display the plot
     st.pyplot(fig)
@@ -380,6 +435,7 @@ def show_market_forecast():
     current_price = forecast_data.iloc[0]["Price (SZL/kg)"]
     min_price = forecast_data["Price (SZL/kg)"].min()
     max_price = forecast_data["Price (SZL/kg)"].max()
+    daily_changes = np.mean(np.abs(np.diff(forecast_data["Price (SZL/kg)"])))
     
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -396,7 +452,7 @@ def show_market_forecast():
     with col3:
         st.metric(
             "Avg. Daily Change",
-            f"±{np.mean(np.abs(np.diff(forecast_data['Price (SZL/kg)'])):.2f}"
+            f"±{daily_changes:.2f}"  # Fixed f-string syntax
         )
     
     # Data table with conditional formatting
