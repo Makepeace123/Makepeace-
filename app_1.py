@@ -7,11 +7,6 @@ import os
 from datetime import datetime, timedelta
 import uuid
 import pandas as pd
-import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
-from datetime import datetime
-
 # Configure page
 st.set_page_config(
     page_title="Tomato Doctor Pro",
@@ -301,91 +296,58 @@ def display_results(predicted_class, info, confidence):
 # =============================================
 # 2. Realistic Price Forecast Demo (Hidden Simulation)
 # =============================================
-def generate_realistic_forecast():
-    """Generate realistic price forecast data"""
-    dates = pd.date_range(start=datetime.today(), periods=30)
-    base_trend = np.sin(np.linspace(0, 3*np.pi, 30)) * 1.5
-    noise = np.random.normal(0, 0.15, 30)
-    prices = 36.5 + base_trend + noise
+def generate_forecast_data():
+    """Generate realistic price data using only numpy"""
+    dates = [datetime.today() + timedelta(days=i) for i in range(30)]
+    base_price = 36.0
+    # Create natural price movements
+    trend = np.sin(np.linspace(0, 3*np.pi, 30)) * 1.8  # Seasonal pattern
+    noise = np.random.normal(0, 0.3, 30)  # Market fluctuations
+    prices = (base_price + trend + noise).round(2)
     return pd.DataFrame({
         "Date": dates,
-        "Price (SZL/kg)": prices.round(2),
-        "Lower Bound": (prices - 0.7).round(2),
-        "Upper Bound": (prices + 0.7).round(2)
+        "Price (SZL/kg)": prices,
+        "Min Expected": (prices - 0.8).round(2),
+        "Max Expected": (prices + 0.8).round(2)
     })
 
-def show_market_forecast():
-    """Display the price forecast visualization"""
-    try:
-        # Generate data
-        forecast_data = generate_realistic_forecast()
-        
-        # Create figure with error handling
-        try:
-            fig, ax = plt.subplots(figsize=(10, 5))
-            
-            # Plot main price line
-            ax.plot(
-                forecast_data["Date"],
-                forecast_data["Price (SZL/kg)"],
-                color='#d62728',
-                linewidth=2.5,
-                label='Forecast Price'
-            )
-            
-            # Plot confidence interval
-            ax.fill_between(
-                forecast_data["Date"],
-                forecast_data["Lower Bound"],
-                forecast_data["Upper Bound"],
-                color='#d62728',
-                alpha=0.15,
-                label='Confidence Range'
-            )
-            
-            # Formatting
-            ax.set_ylabel("Price (SZL/kg)", fontsize=12)
-            ax.grid(True, linestyle='--', alpha=0.7)
-            ax.legend()
-            plt.xticks(rotation=45)
-            plt.tight_layout()
-            
-            st.pyplot(fig)
-            
-        except Exception as plot_error:
-            st.error(f"Failed to create visualization: {str(plot_error)}")
-            st.write("Showing raw data instead:")
-            st.dataframe(forecast_data)
-            return
-        
-        # Display metrics
-        current_price = forecast_data.iloc[0]["Price (SZL/kg)"]
-        min_price = forecast_data["Price (SZL/kg)"].min()
-        max_price = forecast_data["Price (SZL/kg)"].max()
-        daily_changes = np.mean(np.abs(np.diff(forecast_data['Price (SZL/kg)'])))
-        
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Current Price", f"{current_price:.2f} SZL/kg")
-        col2.metric("30-Day Range", f"{min_price:.2f}-{max_price:.2f}")
-        col3.metric("Avg. Daily Change", f"±{daily_changes:.2f}")
-        
-        # Data table
-        with st.expander("View Detailed Forecast Data"):
-            st.dataframe(
-                forecast_data.style.format({
-                    "Price (SZL/kg)": "{:.2f}",
-                    "Lower Bound": "{:.2f}", 
-                    "Upper Bound": "{:.2f}"
-                }),
-                hide_index=True,
-                use_container_width=True
-            )
-            
-    except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
-        st.info("Please try again or check the data inputs")
+def show_price_forecast():
+    st.header("🍅 Tomato Price Forecast")
     
+    # Generate and display data
+    forecast_data = generate_forecast_data()
     
+    # Use Streamlit's native line chart
+    st.line_chart(
+        forecast_data.set_index("Date"),
+        y=["Price (SZL/kg)", "Min Expected", "Max Expected"],
+        color=["#FF0000", "#888888", "#888888"]  # Red for main price, gray for bounds
+    )
+    
+    # Key metrics
+    current_price = forecast_data.iloc[0]["Price (SZL/kg)"]
+    avg_price = forecast_data["Price (SZL/kg)"].mean().round(2)
+    volatility = (forecast_data["Max Expected"] - forecast_data["Min Expected"]).mean().round(2)
+    
+    col1, col2 = st.columns(2)
+    col1.metric("Current Price", f"{current_price} SZL/kg")
+    col2.metric("30-Day Average", f"{avg_price} SZL/kg")
+    st.metric("Daily Volatility", f"±{volatility} SZL/kg")
+    
+    # Data table
+    with st.expander("View Detailed Forecast"):
+        st.dataframe(
+            forecast_data,
+            column_config={
+                "Date": st.column_config.DateColumn("Date"),
+                "Price (SZL/kg)": st.column_config.NumberColumn("Price", format="%.2f")
+            },
+            hide_index=True
+        )
+
+# To use in your app:
+# show_price_forecast()
+
 # =============================================
 # 3. Integrated App with Seamless Navigation
 # =============================================
